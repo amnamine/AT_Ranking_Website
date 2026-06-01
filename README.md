@@ -1,6 +1,3 @@
-<p align="center">
-  <img src="static/images/logo.png" alt="Algérie Télécom Logo" width="120">
-</p>
 
 <h1 align="center">🚀 AT Ranking Website</h1>
 
