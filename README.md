@@ -540,5 +540,5 @@ Built as a university project for **Algérie Télécom** recruitment workflow op
 ---
 
 <p align="center">
-  <sub>© 2026 AT Ranking Website — Algérie Télécom Carrières</sub>
+  <sub>© 2026 AT Ranking Website — AT Carrières</sub>
 </p>
