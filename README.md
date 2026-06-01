@@ -37,7 +37,7 @@
 
 ## 🌐 Overview
 
-**AT Ranking Website** is a full-stack recruitment platform built for **Algérie Télécom**. It streamlines the entire hiring pipeline — from job posting and candidate application to **AI-powered CV analysis**, **technical testing**, and **candidate ranking**.
+**AT Ranking Website** is a full-stack recruitment platform built for **AT**. It streamlines the entire hiring pipeline — from job posting and candidate application to **AI-powered CV analysis**, **technical testing**, and **candidate ranking**.
 
 The platform serves two types of users:
 
