@@ -535,7 +535,7 @@ Access the Django admin at [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/
 
 ## 👥 Authors
 
-Built as a university project for **Algérie Télécom** recruitment workflow optimization.
+Built as a university project for **AT** recruitment workflow optimization.
 
 ---
 
