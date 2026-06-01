@@ -2,7 +2,7 @@
 <h1 align="center">🚀 AT Ranking Website</h1>
 
 <p align="center">
-  <strong>AI-Powered Recruitment Platform for Algérie Télécom</strong>
+  <strong>AI-Powered Recruitment Platform for AT</strong>
 </p>
 
 <p align="center">
