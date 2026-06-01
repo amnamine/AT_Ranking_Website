@@ -1,0 +1,456 @@
+{% load static %}
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Candidature | Algérie Télécom Carrières</title>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { DEFAULT: "#2C5EAA", dark: "#224A86", light: "#E0EBFA" },
+                        accent: { DEFAULT: "#00AA5B", dark: "#008A4A", light: "#E6F7EE" },
+                        surface: "#F8FAFC",
+                        "surface-card": "#FFFFFF",
+                        "surface-muted": "#EEF2F7",
+                        "text-main": "#0F172A",
+                        "text-muted": "#475569",
+                        "text-light": "#94A3B8",
+                        "border-light": "#E2E8F0"
+                    },
+                    fontFamily: { display: ["Inter", "sans-serif"] },
+                    boxShadow: {
+                        card: "0 4px 14px rgba(15, 23, 42, 0.04), 0 2px 6px rgba(15, 23, 42, 0.03)",
+                        blue: "0 22px 40px -18px rgba(44, 94, 170, 0.45)"
+                    },
+                    keyframes: {
+                        "fade-in-up": {
+                            "0%": { opacity: "0", transform: "translateY(20px)" },
+                            "100%": { opacity: "1", transform: "translateY(0)" }
+                        },
+                        "pulse-soft": {
+                            "0%, 100%": { opacity: "0.75", transform: "scale(1)" },
+                            "50%": { opacity: "1", transform: "scale(1.05)" }
+                        }
+                    },
+                    animation: {
+                        "fade-in-up": "fade-in-up 0.55s ease-out both",
+                        "pulse-soft": "pulse-soft 3s ease-in-out infinite"
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        html,
+        body {
+            min-height: 100%;
+            overflow-y: auto !important;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .logo-img {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .page-bg {
+            background:
+                radial-gradient(circle at 88% 12%, rgba(0, 170, 91, 0.14), transparent 28%),
+                radial-gradient(circle at 8% 90%, rgba(44, 94, 170, 0.12), transparent 30%),
+                linear-gradient(180deg, #F8FAFC 0%, #EEF5FF 55%, #F8FAFC 100%);
+        }
+
+        .application-hero {
+            position: relative;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at 92% 12%, rgba(0, 170, 91, 0.24), transparent 30%),
+                linear-gradient(135deg, #2C5EAA 0%, #224A86 58%, #102A55 100%);
+        }
+
+        .application-hero::before {
+            content: "";
+            position: absolute;
+            width: 380px;
+            height: 380px;
+            right: -150px;
+            top: -170px;
+            border-radius: 9999px;
+            background: rgba(255,255,255,0.09);
+        }
+
+        .application-hero::after {
+            content: "";
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            left: -85px;
+            bottom: -95px;
+            border-radius: 9999px;
+            background: rgba(0, 170, 91, 0.20);
+        }
+
+        .form-card {
+            position: relative;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.98);
+            border: 1px solid rgba(226, 232, 240, 0.96);
+            box-shadow: 0 22px 60px -32px rgba(15, 23, 42, 0.32);
+        }
+
+        .form-card::before {
+            content: "";
+            position: absolute;
+            inset: 0 auto 0 0;
+            width: 4px;
+            background: linear-gradient(180deg, #2C5EAA, #00AA5B);
+        }
+
+        .form-input {
+            width: 100%;
+            border-radius: 0.9rem;
+            border: 1px solid #CBD5E1;
+            background: #FFFFFF;
+            color: #0F172A;
+            outline: none;
+            transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+        }
+
+        .form-input:focus {
+            border-color: rgba(44, 94, 170, 0.75);
+            box-shadow: 0 0 0 3px rgba(44, 94, 170, 0.12);
+        }
+
+        .info-card {
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, background-color 0.25s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-4px);
+            background-color: #F3F7FD;
+            border-color: rgba(44, 94, 170, 0.35);
+            box-shadow: 0 18px 34px -18px rgba(44, 94, 170, 0.25);
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #475569;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .sidebar-link:hover {
+            background: #F3F7FD;
+            color: #2C5EAA;
+        }
+
+        .sidebar-link.active {
+            background: #E0EBFA;
+            color: #2C5EAA;
+            font-weight: 800;
+        }
+
+        .sidebar-link.deconnect {
+            color: #c0392b;
+        }
+
+        .sidebar-link.deconnect:hover {
+            background: #fdecea;
+        }
+
+        #sidebar {
+            width: 245px;
+            transition: width 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        #sidebar.collapsed {
+            width: 0;
+            opacity: 0;
+            padding: 0;
+        }
+
+        #toggleBtn {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        #toggleBtn:hover {
+            background: #F3F7FD;
+            color: #2C5EAA;
+        }
+
+        .avatar-circle {
+            width: 96px;
+            height: 96px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #E0EBFA, rgba(44, 94, 170, 0.13));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 3px solid rgba(44, 94, 170, 0.20);
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body class="page-bg font-display text-text-main antialiased">
+<div class="min-h-screen">
+
+    <!-- HEADER -->
+    <header class="bg-white/95 backdrop-blur sticky top-0 z-50 border-b border-border-light">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div id="toggleBtn" title="Afficher / Masquer le menu">
+                    <span class="material-symbols-outlined text-text-muted" style="font-size:24px">menu</span>
+                </div>
+
+                <a href="{% url 'landingpage' %}" class="flex items-center gap-3 group">
+                    <img src="{% static 'images/logo.png' %}" class="logo-img" alt="Algérie Télécom Logo">
+                    <span class="font-bold text-lg text-text-main group-hover:text-primary transition-colors">
+                        Algérie Télécom
+                    </span>
+                </a>
+            </div>
+
+            <nav class="hidden md:flex items-center gap-8">
+                <a href="{% url 'landingpage' %}" class="text-sm font-medium text-text-muted hover:text-primary transition-colors">Accueil</a>
+                <a href="{% url 'job_list' %}" class="text-sm font-medium text-text-muted hover:text-primary transition-colors">Offres d'emploi</a>
+                <a href="{% url 'about_contact' %}" class="text-sm font-medium text-text-muted hover:text-primary transition-colors">À propos</a>
+                <a href="{% url 'about_contact' %}" class="text-sm font-medium text-text-muted hover:text-primary transition-colors">Contact</a>
+            </nav>
+
+            <div class="md:hidden">
+                <span class="material-symbols-outlined text-text-main">menu</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- PAGE BODY: no forced inner scroll, browser scroll stays natural -->
+    <div class="flex items-stretch">
+        {% with active_page="applications" %}
+            {% include "careers/partials/candidate_sidebar.html" %}
+        {% endwith %}
+
+        <!-- MAIN CONTENT -->
+        <main class="flex-1 w-full">
+
+            <!-- HERO -->
+            <section class="application-hero text-white">
+                <div class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 md:px-8 py-8 md:py-10">
+                    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-5">
+                        <div class="max-w-3xl animate-fade-in-up">
+                            <div class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-2 text-xs font-extrabold text-white backdrop-blur">
+                                <span class="h-2 w-2 rounded-full bg-accent animate-pulse-soft"></span>
+                                Candidature en ligne
+                            </div>
+
+                            <h1 class="mt-4 text-3xl md:text-4xl font-black tracking-tight leading-tight">
+                                Postuler à cette offre
+                            </h1>
+
+                            <p id="jobTitleText" class="mt-3 text-white/85 leading-7 max-w-2xl">
+                                Remplissez le formulaire ci-dessous pour soumettre votre candidature.
+                            </p>
+                        </div>
+
+                        <a href="{% url 'job_list' %}" class="inline-flex items-center justify-center gap-2 rounded-xl border border-white/25 bg-white/10 px-5 py-3 text-sm font-bold text-white hover:bg-white/15 transition-all">
+                            Retour aux offres
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FORM SECTION -->
+            <section class="max-w-6xl mx-auto px-4 sm:px-6 md:px-8 py-8 md:py-10">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 items-start">
+
+                    <!-- APPLICATION FORM -->
+                    <div class="lg:col-span-2">
+                        <div id="applicationAlert" class="hidden mb-5 p-4 rounded-2xl text-sm"></div>
+
+                        <div class="form-card rounded-3xl p-6 md:p-8 animate-fade-in-up">
+                            <div class="mb-6">
+                                <div class="flex items-start gap-4">
+                                    <div class="h-11 w-11 rounded-2xl bg-primary-light flex items-center justify-center shrink-0">
+                                        <span class="material-symbols-outlined text-primary text-2xl">assignment</span>
+                                    </div>
+                                    <div>
+                                        <h2 class="text-2xl md:text-3xl font-black text-text-main">
+                                            Informations de candidature
+                                        </h2>
+                                        <p class="text-sm text-text-muted mt-1">
+                                            Les champs marqués d’un astérisque sont obligatoires.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <form class="flex flex-col gap-5" id="applicationForm" enctype="multipart/form-data">
+
+                                <div class="space-y-2">
+                                    <label for="full_name" class="block text-sm font-bold text-text-main">
+                                        Nom complet *
+                                    </label>
+                                    <div class="relative">
+                                        <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-text-light">person</span>
+                                        <input
+                                            id="full_name"
+                                            name="full_name"
+                                            type="text"
+                                            class="form-input pl-12 pr-4 py-3.5 placeholder:text-text-light/70"
+                                            placeholder="Exemple: Yume Yu"
+                                            required
+                                        >
+                                    </div>
+                                </div>
+
+                                <div class="space-y-2">
+                                    <label for="phone" class="block text-sm font-bold text-text-main">
+                                        Téléphone *
+                                    </label>
+                                    <div class="relative">
+                                        <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-text-light">call</span>
+                                        <input
+                                            id="phone"
+                                            name="phone"
+                                            type="tel"
+                                            class="form-input pl-12 pr-4 py-3.5 placeholder:text-text-light/70"
+                                            placeholder="0XXXXXXXXX"
+                                            required
+                                        >
+                                    </div>
+                                </div>
+
+                                <div class="space-y-2">
+                                    <label for="cv_file" class="block text-sm font-bold text-text-main">
+                                        CV
+                                    </label>
+                                    <div class="rounded-2xl border border-dashed border-primary/30 bg-primary-light/35 p-4">
+                                        <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+                                            <div class="h-11 w-11 rounded-xl bg-white flex items-center justify-center shrink-0 shadow-card">
+                                                <span class="material-symbols-outlined text-primary">upload_file</span>
+                                            </div>
+                                            <div class="flex-1">
+                                                <input
+                                                    id="cv_file"
+                                                    name="cv_file"
+                                                    type="file"
+                                                    accept=".pdf,.doc,.docx"
+                                                    class="block w-full text-sm text-text-muted file:mr-4 file:rounded-xl file:border-0 file:bg-primary file:px-4 file:py-2.5 file:text-sm file:font-bold file:text-white hover:file:bg-primary-dark"
+                                                >
+                                                <p class="text-xs text-text-muted mt-2">
+                                                    Formats acceptés: PDF, DOC, DOCX.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-2">
+                                    <label for="message" class="block text-sm font-bold text-text-main">
+                                        Message
+                                    </label>
+                                    <textarea
+                                        id="message"
+                                        name="message"
+                                        class="form-input px-4 py-3.5 placeholder:text-text-light/70 resize-none"
+                                        rows="4"
+                                        placeholder="Message optionnel..."
+                                    ></textarea>
+                                </div>
+
+                                <div class="pt-1">
+                                    <button
+                                        id="submitApplicationBtn"
+                                        type="submit"
+                                        class="group w-full inline-flex items-center justify-center gap-2 bg-accent text-white px-6 py-3.5 rounded-xl font-extrabold hover:bg-accent-dark hover:-translate-y-0.5 shadow-lg shadow-accent/20 active:scale-[0.98] transition-all duration-200"
+                                    >
+                                        Envoyer la candidature
+                                        <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                                    </button>
+
+                                    <p class="mt-3 text-xs text-text-muted leading-5 text-center">
+                                        En envoyant votre candidature, vous confirmez que les informations fournies sont exactes.
+                                    </p>
+                                </div>
+
+                            </form>
+
+                            <div id="successMsg" class="hidden mt-5 p-4 bg-accent-light border border-accent/20 rounded-2xl flex items-center gap-3 text-accent">
+                                <span class="material-symbols-outlined">check_circle</span>
+                                <span class="font-bold">Candidature envoyée avec succès !</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SIDE INFO -->
+                    <aside class="space-y-5 lg:sticky lg:top-24">
+                        <div class="info-card rounded-3xl border border-border-light bg-white p-6 shadow-card animate-fade-in-up" style="animation-delay: 0.08s;">
+                            <div class="h-11 w-11 rounded-2xl bg-primary-light flex items-center justify-center mb-4">
+                                <span class="material-symbols-outlined text-primary text-2xl">tips_and_updates</span>
+                            </div>
+                            <h3 class="text-lg font-black text-text-main">Conseil candidature</h3>
+                            <p class="mt-2 text-sm leading-7 text-text-muted">
+                                Vérifiez que votre CV est clair, récent et adapté au poste sélectionné avant l’envoi.
+                            </p>
+                        </div>
+
+                        <div class="info-card rounded-3xl border border-border-light bg-white p-6 shadow-card animate-fade-in-up" style="animation-delay: 0.16s;">
+                            <div class="h-11 w-11 rounded-2xl bg-accent-light flex items-center justify-center mb-4">
+                                <span class="material-symbols-outlined text-accent text-2xl">route</span>
+                            </div>
+                            <h3 class="text-lg font-black text-text-main">Après l’envoi</h3>
+                            <p class="mt-2 text-sm leading-7 text-text-muted">
+                                Votre candidature sera visible dans votre espace candidat. Le RH pourra ensuite l’examiner et mettre à jour son statut.
+                            </p>
+                        </div>
+                    </aside>
+
+                </div>
+            </section>
+
+            <!-- FOOTER -->
+            <footer class="bg-primary text-white mt-8">
+                <div class="max-w-7xl mx-auto px-4 py-5 flex justify-between items-center flex-wrap gap-4">
+                    <span class="text-xs text-white/70">© 2026 Algérie Télécom Carrières. Tous droits réservés.</span>
+                    <div class="h-1.5 w-24 rounded-full bg-accent"></div>
+                </div>
+            </footer>
+
+        </main>
+    </div>
+</div>
+
+<script src="{% static 'js/application.js' %}"></script>
+{% include "careers/chatbot.html" %}
+<script src="{% static 'js/chatbot.js' %}"></script>
+</body>
+</html>

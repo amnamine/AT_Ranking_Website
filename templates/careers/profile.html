@@ -1,0 +1,478 @@
+{% load static %}
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Espace Candidat | Algérie Télécom Carrières</title>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#005fac",
+                        "primary-dark": "#004884",
+                        "primary-light": "#d4e3ff",
+                        secondary: "#006d38",
+                        surface: "#f7f9fc",
+                        "surface-card": "#ffffff",
+                        "surface-muted": "#e6e8eb",
+                        "text-main": "#191c1e",
+                        "text-muted": "#414752",
+                        "border-light": "#c0c7d4",
+                        "at-blue": "#285ea8",
+                        success: "#0f8f5f",
+                        warning: "#d97706",
+                        danger: "#c0392b"
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .logo-img {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #414752;
+            transition: all 0.2s;
+            text-decoration: none;
+            cursor: pointer;
+            width: 100%;
+            text-align: left;
+        }
+
+        .sidebar-link:hover {
+            background: #f0f4ff;
+            color: #005fac;
+        }
+
+        .sidebar-link.active {
+            background: #d4e3ff;
+            color: #005fac;
+            font-weight: 700;
+        }
+
+        .sidebar-link.deconnect {
+            color: #c0392b;
+        }
+
+        .sidebar-link.deconnect:hover {
+            background: #fdecea;
+        }
+
+        #sidebar {
+            width: 245px;
+            transition: width 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        #sidebar.collapsed {
+            width: 0;
+            opacity: 0;
+            padding: 0;
+        }
+
+        #toggleBtn {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        #toggleBtn:hover {
+            background: #f0f4ff;
+        }
+
+        .avatar-circle {
+            width: 96px;
+            height: 96px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #d4e3ff, #005fac22);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 3px solid #005fac33;
+            overflow: hidden;
+        }
+
+        .section-card {
+            background: #fff;
+            border: 1px solid #c0c7d433;
+            border-radius: 14px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .field-group label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #414752;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .field-group input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #c0c7d4;
+            border-radius: 10px;
+            font-size: 0.875rem;
+            color: #191c1e;
+            background: #f7f9fc;
+            transition: border 0.2s, background 0.2s;
+            outline: none;
+        }
+
+        .field-group input:focus {
+            border-color: #005fac;
+            background: #fff;
+        }
+
+        .field-group input[readonly] {
+            color: #717784;
+            cursor: not-allowed;
+            background: #eef1f5;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: #d4e3ff;
+            color: #005fac;
+        }
+
+        .badge.success {
+            background: #e3f8ed;
+            color: #0f8f5f;
+        }
+
+        .badge.warning {
+            background: #fff3d8;
+            color: #d97706;
+        }
+
+        .badge.danger {
+            background: #fdecea;
+            color: #c0392b;
+        }
+
+        .save-btn {
+            background: #005fac;
+            color: #fff;
+            padding: 10px 24px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.875rem;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .save-btn:hover {
+            background: #004884;
+        }
+
+        .save-btn:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+        }
+
+        .outline-btn {
+            background: #fff;
+            color: #005fac;
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.875rem;
+            border: 1px solid #005fac33;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .outline-btn:hover {
+            background: #f0f4ff;
+        }
+
+        .upload-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border: 2px dashed #c0c7d4;
+            border-radius: 14px;
+            padding: 18px 22px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #fff;
+        }
+
+        .upload-card:hover {
+            border-color: #005fac;
+            background: #f0f4ff;
+        }
+
+        .profile-tab-section {
+            display: none;
+        }
+
+        .profile-tab-section.active {
+            display: block;
+        }
+
+        .answer-option {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            border: 1px solid #c0c7d466;
+            border-radius: 12px;
+            padding: 12px;
+            cursor: pointer;
+            background: #fff;
+            transition: all 0.2s;
+        }
+
+        .answer-option:hover {
+            background: #f0f4ff;
+            border-color: #005fac55;
+        }
+    </style>
+</head>
+
+<body class="bg-surface font-[Inter] text-text-main">
+
+<div class="flex flex-col min-h-screen">
+
+    <header class="bg-white border-b border-border-light">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-4 flex items-center justify-between">
+
+            <div class="flex items-center gap-3">
+                <div id="toggleBtn" title="Afficher / Masquer le menu">
+                    <span class="material-symbols-outlined text-text-muted" style="font-size:24px">menu</span>
+                </div>
+
+                <a href="{% url 'landingpage' %}" class="flex items-center gap-3">
+                    <img src="{% static 'images/logo.png' %}" class="logo-img" alt="Algérie Télécom Logo">
+                    <div>
+                        <span class="font-bold text-lg block leading-tight text-text-main">Algérie Télécom</span>
+                        <span class="text-xs text-text-muted font-medium">Espace Candidat</span>
+                    </div>
+                </a>
+            </div>
+
+            <nav class="hidden md:flex gap-8">
+                <a href="{% url 'landingpage' %}" class="text-sm text-text-muted hover:text-primary">Accueil</a>
+                <a href="{% url 'job_list' %}" class="text-sm text-text-muted hover:text-primary">Offres d'emploi</a>
+                <a href="{% url 'about_contact' %}" class="text-sm text-text-muted hover:text-primary">À propos</a>
+                <a href="{% url 'about_contact' %}" class="text-sm text-text-muted hover:text-primary">Contact</a>
+            </nav>
+
+            <div class="md:hidden">
+                <span class="material-symbols-outlined">menu</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex flex-1">
+
+        {% with active_page="profile" %}
+            {% include "careers/partials/candidate_sidebar.html" %}
+        {% endwith %}
+
+        <main class="flex-1 py-10 px-4 md:px-10">
+            <div class="max-w-3xl mx-auto">
+
+                <section id="profileSection" class="profile-tab-section active">
+                    <div class="mb-8">
+                        <h1 class="text-3xl font-black text-text-main">Mon Profil</h1>
+                        <p class="text-text-muted mt-1">
+                            Gérez vos informations principales, votre photo et votre CV.
+                        </p>
+                    </div>
+
+                    <div class="section-card flex flex-col sm:flex-row items-center gap-6 mb-6">
+                        <div class="avatar-circle" style="width:80px;height:80px;flex-shrink:0">
+                            <span class="material-symbols-outlined text-primary" style="font-size:36px">person</span>
+                        </div>
+
+                        <div class="flex-1 text-center sm:text-left">
+                            <h2 class="text-xl font-bold text-text-main" id="displayName">Mon Profil</h2>
+                            <p class="text-text-muted text-sm" id="displayEmail">email@exemple.dz</p>
+
+                            <div class="mt-2">
+                                <span class="badge">
+                                    <span class="material-symbols-outlined" style="font-size:14px">verified</span>
+                                    Candidat actif
+                                </span>
+                            </div>
+                        </div>
+
+                        <label class="save-btn cursor-pointer text-center" style="padding:8px 16px;font-size:0.8rem">
+                            <span class="material-symbols-outlined align-middle" style="font-size:16px">upload</span>
+                            Photo
+                            <input type="file" accept="image/*" class="hidden" id="photoInput">
+                        </label>
+                    </div>
+
+                    <div class="section-card">
+                        <h3 class="font-bold text-primary mb-5 flex items-center gap-2">
+                            <span class="material-symbols-outlined" style="font-size:20px">badge</span>
+                            Informations personnelles
+                        </h3>
+
+                        <div class="grid sm:grid-cols-2 gap-4">
+                            <div class="field-group">
+                                <label for="prenom">Prénom</label>
+                                <input type="text" id="prenom" placeholder="Votre prénom">
+                            </div>
+
+                            <div class="field-group">
+                                <label for="nom">Nom</label>
+                                <input type="text" id="nom" placeholder="Votre nom">
+                            </div>
+
+                            <div class="field-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" placeholder="email@exemple.dz" readonly>
+                            </div>
+
+                            <div class="field-group">
+                                <label for="telephone">Téléphone</label>
+                                <input type="tel" id="telephone" placeholder="+213 XX XX XX XX">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-card">
+                        <h3 class="font-bold text-primary mb-5 flex items-center gap-2">
+                            <span class="material-symbols-outlined" style="font-size:20px">attach_file</span>
+                            Mon CV
+                        </h3>
+
+                        <div class="flex items-center gap-4 flex-wrap">
+                            <label class="upload-card">
+                                <span class="material-symbols-outlined text-primary" style="font-size:26px">upload_file</span>
+
+                                <div>
+                                    <p class="font-semibold text-sm text-text-main">Importer un CV</p>
+                                    <p class="text-xs text-text-muted">PDF uniquement, max 5 MB</p>
+                                </div>
+
+                                <input type="file" accept=".pdf" class="hidden" id="cvInput">
+                            </label>
+
+                            <p id="cvName" class="text-sm text-text-muted italic"></p>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end mt-2 mb-10">
+                        <button class="save-btn" id="saveProfileBtn">
+                            <span class="material-symbols-outlined align-middle" style="font-size:18px">save</span>
+                            Enregistrer le profil
+                        </button>
+                    </div>
+                </section>
+
+                <section id="testSection" class="profile-tab-section">
+                    <div class="mb-8">
+                        <h1 class="text-3xl font-black text-text-main">Test technique</h1>
+                        <p class="text-text-muted mt-1">
+                            Répondez au test technique envoyé par le service RH.
+                        </p>
+                    </div>
+
+                    <div id="testContainer" class="section-card">
+                        <p class="text-sm text-text-muted">Chargement du test...</p>
+                    </div>
+                </section>
+
+                <div id="toast" class="hidden fixed bottom-6 right-6 bg-green-600 text-white px-5 py-3 rounded-xl shadow-lg flex items-center gap-2 text-sm font-semibold z-50">
+                    Profil enregistré avec succès !
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <footer class="mt-10">
+        <div class="bg-at-blue text-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-12">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+
+                    <div>
+                        <h3 class="text-lg font-bold mb-4">Présentation</h3>
+                        <p class="text-sm text-white/85">
+                            Algérie Télécom Carrières accompagne les talents souhaitant contribuer au développement numérique.
+                        </p>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-bold mb-4">À propos</h3>
+                        <ul class="space-y-2 text-sm text-white/85">
+                            <li><a href="{% url 'about_contact' %}" class="hover:text-white">Qui sommes-nous ?</a></li>
+                            <li><a href="{% url 'about_contact' %}" class="hover:text-white">Nos valeurs</a></li>
+                            <li><a href="{% url 'job_list' %}" class="hover:text-white">Offres d'emploi</a></li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-bold mb-4">Contact</h3>
+                        <p class="text-sm text-white/85">Alger, Algérie</p>
+                        <p class="text-sm text-white/85">contact@algerietelecom.dz</p>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-bold mb-4">Suivez-nous</h3>
+                        <div class="flex gap-4 text-sm text-white/85">
+                            <a href="#" class="hover:text-white">Facebook</a>
+                            <a href="#" class="hover:text-white">LinkedIn</a>
+                            <a href="#" class="hover:text-white">Instagram</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white border-t border-border-light">
+            <div class="max-w-7xl mx-auto px-4 py-5">
+                <span class="text-xs text-text-muted">© 2026 Algérie Télécom</span>
+            </div>
+        </div>
+    </footer>
+
+</div>
+
+<script src="{% static 'js/profile.js' %}?v=2"></script>
+{% include "careers/chatbot.html" %}
+<script src="{% static 'js/chatbot.js' %}"></script>
+</body>
+</html>

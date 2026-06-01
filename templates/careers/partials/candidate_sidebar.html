@@ -1,0 +1,75 @@
+{% load static %}
+
+<aside id="sidebar" class="flex flex-col bg-white border-r border-border-light px-4 py-8">
+
+    <div class="flex flex-col items-center mb-8 text-center">
+        <div class="avatar-circle mb-3" id="sidebarAvatar">
+            <span class="material-symbols-outlined text-primary" style="font-size:40px">person</span>
+        </div>
+
+        <p class="font-bold text-sm text-text-main" id="sidebarName">
+            Mon Espace
+        </p>
+
+        <p class="text-xs text-text-muted" id="sidebarEmail">
+            Candidat
+        </p>
+    </div>
+
+    <div class="flex flex-col gap-1 flex-1">
+
+        <a
+            href="{% url 'candidate_dashboard' %}"
+            data-page="dashboard"
+            class="sidebar-link {% if active_page == 'dashboard' %}active{% endif %}"
+        >
+            <span class="material-symbols-outlined" style="font-size:20px">dashboard</span>
+            Tableau de bord
+        </a>
+
+        <a
+            href="{% url 'candidate_dashboard' %}?tab=applications"
+            data-page="applications"
+            class="sidebar-link {% if active_page == 'applications' %}active{% endif %}"
+        >
+            <span class="material-symbols-outlined" style="font-size:20px">description</span>
+            Mes candidatures
+        </a>
+
+        <a
+            href="{% url 'candidate_test_page' %}"
+            data-page="test"
+            class="sidebar-link {% if active_page == 'test' %}active{% endif %}"
+        >
+            <span class="material-symbols-outlined" style="font-size:20px">quiz</span>
+            Test technique
+        </a>
+
+        <a
+            href="{% url 'candidate_dashboard' %}?tab=notifications"
+            data-page="notifications"
+            class="sidebar-link {% if active_page == 'notifications' %}active{% endif %}"
+        >
+            <span class="material-symbols-outlined" style="font-size:20px">notifications</span>
+            Notifications
+        </a>
+
+        <a
+            href="{% url 'profile_page' %}"
+            data-page="profile"
+            class="sidebar-link {% if active_page == 'profile' %}active{% endif %}"
+        >
+            <span class="material-symbols-outlined" style="font-size:20px">person</span>
+            Mon Profil
+        </a>
+
+    </div>
+
+    <div class="border-t border-border-light pt-4 mt-4">
+        <a href="{% url 'landingpage' %}" id="logoutLink" class="sidebar-link deconnect">
+            <span class="material-symbols-outlined" style="font-size:20px">logout</span>
+            Se déconnecter
+        </a>
+    </div>
+
+</aside>

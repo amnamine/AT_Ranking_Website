@@ -1,0 +1,375 @@
+{% load static %}
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Espace RH | Algérie Télécom Carrières</title>
+
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#005fac",
+                        "primary-dark": "#004884",
+                        "primary-light": "#d4e3ff",
+                        secondary: "#006d38",
+                        surface: "#f7f9fc",
+                        "surface-card": "#ffffff",
+                        "surface-muted": "#e6e8eb",
+                        "text-main": "#191c1e",
+                        "text-muted": "#414752",
+                        "border-light": "#c0c7d4",
+                        "at-blue": "#285ea8",
+                        success: "#0f8f5f",
+                        warning: "#d97706",
+                        danger: "#c0392b"
+                    }
+                }
+            }
+        }
+    </script>
+
+
+    <style>
+        .logo-img { width: 120px; height: 120px; object-fit: contain; display: block; }
+
+
+        .sidebar-link {
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 14px; border-radius: 10px;
+            font-size: 0.875rem; font-weight: 500; color: #414752;
+            transition: all 0.2s; text-decoration: none;
+            cursor: pointer; width: 100%; text-align: left;
+        }
+        .sidebar-link:hover { background: #f0f4ff; color: #005fac; }
+        .sidebar-link.active { background: #d4e3ff; color: #005fac; font-weight: 700; }
+        .sidebar-link.deconnect { color: #c0392b; }
+        .sidebar-link.deconnect:hover { background: #fdecea; }
+
+
+        #sidebar {
+            width: 245px;
+            transition: width 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
+            overflow: hidden; flex-shrink: 0;
+        }
+        #sidebar.collapsed { width: 0; opacity: 0; padding-left: 0; padding-right: 0; }
+
+
+        #toggleBtn {
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            width: 36px; height: 36px; border-radius: 8px; transition: background 0.2s;
+        }
+        #toggleBtn:hover { background: #f0f4ff; }
+
+
+        .avatar-circle {
+            width: 96px; height: 96px; border-radius: 50%;
+            background: linear-gradient(135deg, #d4e3ff, #005fac22);
+            display: flex; align-items: center; justify-content: center;
+            border: 3px solid #005fac33; overflow: hidden;
+        }
+
+
+        .section-card {
+            background: #fff; border: 1px solid #c0c7d433;
+            border-radius: 14px; padding: 24px; margin-bottom: 20px;
+        }
+        .small-card {
+            background: #fff; border: 1px solid #c0c7d433;
+            border-radius: 14px; padding: 18px;
+        }
+        .card {
+            background: #fff; border: 1px solid #c0c7d433;
+            border-radius: 14px;
+        }
+
+
+        .badge {
+            display: inline-flex; align-items: center; gap: 5px;
+            padding: 4px 12px; border-radius: 999px;
+            font-size: 0.75rem; font-weight: 700;
+            background: #d4e3ff; color: #005fac; white-space: nowrap;
+        }
+        .badge.success { background: #e3f8ed; color: #0f8f5f; }
+        .badge.warning { background: #fff3d8; color: #d97706; }
+        .badge.danger  { background: #fdecea; color: #c0392b; }
+
+
+        .save-btn {
+            background: #005fac; color: #fff;
+            padding: 10px 18px; border-radius: 10px;
+            font-weight: 700; font-size: 0.875rem; border: none;
+            cursor: pointer; transition: background 0.2s;
+        }
+        .save-btn:hover { background: #004884; }
+        .save-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+
+        .outline-btn {
+            background: #fff; color: #005fac;
+            padding: 9px 16px; border-radius: 10px;
+            font-weight: 700; font-size: 0.875rem;
+            border: 1px solid #005fac33; cursor: pointer; transition: all 0.2s;
+        }
+        .outline-btn:hover { background: #f0f4ff; }
+        .outline-btn:disabled {
+            opacity: 0.45; cursor: not-allowed;
+            background: #f7f9fc; color: #414752;
+        }
+
+
+        .page-section { display: none; }
+        .page-section.active { display: block; }
+        .table-row:hover { background: #f0f4ff; }
+
+
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(25,28,30,0.55);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 999; padding: 16px;
+            opacity: 0; pointer-events: none; transition: opacity 0.2s;
+        }
+        .modal-overlay.open { opacity: 1; pointer-events: all; }
+        .modal-box {
+            background: #fff; border-radius: 18px;
+            width: 100%; max-width: 700px;
+            max-height: 90vh; overflow-y: auto;
+            padding: 28px; box-shadow: 0 8px 40px rgba(0,0,0,0.16);
+            transform: translateY(12px); transition: transform 0.2s;
+        }
+        .modal-overlay.open .modal-box { transform: translateY(0); }
+
+
+        .job-card {
+            background: #fff; border: 1px solid #c0c7d433;
+            border-radius: 12px; padding: 16px 20px;
+            cursor: pointer; transition: all 0.18s;
+            display: flex; align-items: center; justify-content: space-between; gap: 12px;
+        }
+        .job-card:hover { border-color: #005fac66; background: #f5f8ff; }
+        .job-card.selected { border-color: #005fac; background: #f0f6ff; }
+
+
+        .accept-btn-locked {
+            opacity: 0.45; cursor: not-allowed !important;
+            background: #f7f9fc !important; color: #414752 !important;
+        }
+
+
+        .filter-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+
+
+        .chart-wrap { position: relative; }
+        .chart-container { min-height: 260px; }
+
+
+        #jobModalMissions .job-modal-item,
+        #jobModalProfiles .job-modal-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px;
+            border-radius: 14px;
+            background: #f7f9fc;
+            border: 1px solid #c0c7d433;
+        }
+        .job-modal-icon {
+            color: #005fac;
+            margin-top: 2px;
+        }
+        .job-modal-text {
+            font-size: 0.92rem;
+            line-height: 1.7;
+            color: #414752;
+        }
+    </style>
+</head>
+
+
+<body class="bg-surface font-[Inter] text-text-main">
+<div class="flex flex-col min-h-screen">
+
+
+    <!-- HEADER -->
+    <header class="bg-white border-b border-border-light">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div id="toggleBtn" title="Afficher / Masquer le menu">
+                    <span class="material-symbols-outlined text-text-muted" style="font-size:24px">menu</span>
+                </div>
+                <a href="{% url 'landingpage' %}" class="flex items-center gap-3">
+                    <img src="{% static 'images/logo.png' %}" class="logo-img" alt="Algérie Télécom Logo">
+                    <div>
+                        <span class="font-bold text-lg block leading-tight text-text-main">Algérie Télécom</span>
+                        <span class="text-xs text-text-muted font-medium">Espace RH</span>
+                    </div>
+                </a>
+            </div>
+            <nav class="hidden md:flex gap-8">
+                <a href="{% url 'landingpage' %}" class="text-sm text-text-muted hover:text-primary">Accueil</a>
+                <a href="{% url 'job_list' %}" class="text-sm text-text-muted hover:text-primary">Offres d'emploi</a>
+                <a href="{% url 'about_contact' %}" class="text-sm text-text-muted hover:text-primary">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+
+    <div class="flex flex-1">
+        <aside id="sidebar" class="flex flex-col bg-white border-r border-border-light px-4 py-8">
+            <div class="flex flex-col items-center mb-8 text-center">
+                <div class="avatar-circle mb-3">
+                    <span class="material-symbols-outlined text-primary" style="font-size:42px">admin_panel_settings</span>
+                </div>
+                <p class="font-bold text-sm text-text-main" id="sidebarName">Espace RH</p>
+                <p class="text-xs text-text-muted" id="sidebarEmail">Recruteur</p>
+            </div>
+
+
+            <div class="flex flex-col gap-1">
+                <button type="button" data-page="dashboard" class="sidebar-link active">
+                    <span class="material-symbols-outlined" style="font-size:20px">dashboard</span>
+                    Dashboard
+                </button>
+                <button type="button" data-page="job-offers" class="sidebar-link">
+                    <span class="material-symbols-outlined" style="font-size:20px">group</span>
+                    Job Offers
+                </button>
+                <button type="button" data-page="offres-tests" class="sidebar-link">
+                    <span class="material-symbols-outlined" style="font-size:20px">work_history</span>
+                    Offres &amp; Tests
+                </button>
+            </div>
+
+
+            <div class="border-t border-border-light mt-3 pt-2">
+                <a href="{% url 'landingpage' %}" id="logoutLink" class="sidebar-link deconnect">
+                    <span class="material-symbols-outlined" style="font-size:20px">logout</span>
+                    Se déconnecter
+                </a>
+            </div>
+        </aside>
+
+
+        <main class="flex-1 py-10 px-4 md:px-10 overflow-y-auto">
+            <div class="max-w-6xl mx-auto">
+
+
+                <!-- SECTION DASHBOARD -->
+                <section id="page-dashboard" class="page-section active">
+                    <div class="mb-8">
+                        <h1 class="text-3xl font-black text-text-main">Tableau de bord RH</h1>
+                        <p class="text-text-muted mt-1">Statistiques des offres d'emploi publiées sur la plateforme.</p>
+                    </div>
+                    <div class="grid sm:grid-cols-3 gap-4 mb-8">
+                        <div class="small-card"><div class="flex items-center gap-3"><div class="w-11 h-11 rounded-xl bg-primary-light flex items-center justify-center"><span class="material-symbols-outlined text-primary">work</span></div><div><p id="kpiTotalJobs" class="text-2xl font-black">0</p><p class="text-xs text-text-muted font-semibold">Total offres</p></div></div></div>
+                        <div class="small-card"><div class="flex items-center gap-3"><div class="w-11 h-11 rounded-xl bg-green-100 flex items-center justify-center"><span class="material-symbols-outlined text-success">check_circle</span></div><div><p id="kpiOpenJobs" class="text-2xl font-black">0</p><p class="text-xs text-text-muted font-semibold">Offres ouvertes</p></div></div></div>
+                        <div class="small-card"><div class="flex items-center gap-3"><div class="w-11 h-11 rounded-xl bg-red-100 flex items-center justify-center"><span class="material-symbols-outlined text-danger">cancel</span></div><div><p id="kpiClosedJobs" class="text-2xl font-black">0</p><p class="text-xs text-text-muted font-semibold">Offres fermées</p></div></div></div>
+                    </div>
+                    <div class="grid lg:grid-cols-[1fr_360px] gap-5 mb-6">
+                        <div class="section-card"><h2 class="font-bold text-primary flex items-center gap-2 mb-5"><span class="material-symbols-outlined" style="font-size:20px">bar_chart</span> Offres publiées par mois</h2><div class="chart-wrap" style="height:240px"><canvas id="chartOffresParMois"></canvas></div></div>
+                        <div class="section-card"><h2 class="font-bold text-primary flex items-center gap-2 mb-5"><span class="material-symbols-outlined" style="font-size:20px">donut_large</span> Répartition par domaine</h2><div class="chart-wrap" style="height:240px"><canvas id="chartRepartitionDomaine"></canvas></div></div>
+                    </div>
+                    <div class="section-card"><div class="flex justify-between items-center mb-5"><h2 class="font-bold text-primary flex items-center gap-2"><span class="material-symbols-outlined" style="font-size:20px">assignment</span> Candidatures récentes</h2><button type="button" data-page-target="job-offers" class="text-sm font-bold text-primary hover:underline">Voir tout</button></div><div id="recentApplications" class="space-y-3"><p class="text-sm text-text-muted">Chargement...</p></div></div>
+                </section>
+
+
+                <!-- SECTION JOB OFFERS (avec analytics globaux en haut) -->
+                <section id="page-job-offers" class="page-section">
+                    <div class="mb-6">
+                        <h1 class="text-3xl font-black text-text-main">Job Offers</h1>
+                        <p class="text-text-muted mt-1">Vue d'ensemble des candidatures et gestion des offres.</p>
+                    </div>
+
+
+                    <!-- GLOBAL KPIs (toutes candidatures) -->
+                    <div class="grid md:grid-cols-4 gap-4 mb-6">
+                        <div class="card p-4"><p class="text-xs text-text-muted">Total candidats</p><h3 id="joKpiTotal" class="text-2xl font-black text-primary mt-2">0</h3></div>
+                        <div class="card p-4"><p class="text-xs text-text-muted">Acceptés</p><h3 id="joKpiAccepted" class="text-2xl font-black text-success mt-2">0</h3></div>
+                        <div class="card p-4"><p class="text-xs text-text-muted">Refusés</p><h3 id="joKpiRejected" class="text-2xl font-black text-danger mt-2">0</h3></div>
+                        <div class="card p-4"><p class="text-xs text-text-muted">Tests envoyés</p><h3 id="joKpiTests" class="text-2xl font-black text-warning mt-2">0</h3></div>
+                    </div>
+
+
+                    <!-- GLOBAL CHARTS (toutes candidatures) -->
+                    <div class="grid xl:grid-cols-2 gap-6 mb-8">
+                        <div class="card p-5"><div class="flex items-center justify-between mb-5"><div><h3 class="font-black text-primary">Répartition des candidatures</h3><p class="text-xs text-text-muted mt-1">Statuts globaux</p></div></div><div class="chart-container h-[260px]"><canvas id="joChartStatus"></canvas></div></div>
+                        <div class="card p-5"><div class="flex items-center justify-between mb-5"><div><h3 class="font-black text-primary">Scores IA des candidats</h3><p class="text-xs text-text-muted mt-1">Tous candidats confondus</p></div></div><div class="chart-container h-[260px]"><canvas id="joChartScores"></canvas></div></div>
+                    </div>
+
+
+                    <!-- Section gauche: offres / droite: détails offre sélectionnée -->
+                    <div class="grid lg:grid-cols-[340px_1fr] gap-6">
+                        <div>
+                            <div class="section-card p-4 mb-0">
+                                <div class="filter-bar mb-3"><input id="joFilterSearch" type="search" placeholder="Rechercher une offre..." class="flex-1 min-w-0 rounded-lg border-border-light text-sm focus:border-primary focus:ring-primary"></div>
+                                <div class="filter-bar"><select id="joFilterStatus" class="rounded-lg border-border-light text-sm focus:border-primary focus:ring-primary"><option value="">Tous les statuts</option><option value="active">Active</option><option value="inactive">Fermée</option></select><select id="joFilterDomain" class="rounded-lg border-border-light text-sm focus:border-primary focus:ring-primary"><option value="">Tous les domaines</option></select></div>
+                            </div>
+                            <div id="joOffersList" class="space-y-2 mt-3"><p class="text-sm text-text-muted px-1">Chargement...</p></div>
+                        </div>
+                        <div id="joCandidatesPanel">
+                            <div id="joPlaceholder" class="section-card flex flex-col items-center justify-center py-16 text-center"><span class="material-symbols-outlined text-border-light" style="font-size:56px">touch_app</span><p class="text-text-muted mt-3 font-semibold">Sélectionnez une offre</p><p class="text-text-muted text-sm mt-1">La liste des candidats s'affichera ici.</p></div>
+                            <div id="joOfferDetail" class="hidden">
+                                <div class="section-card mb-4"><div class="flex items-start justify-between gap-3"><div><h2 id="joDetailTitle" class="text-xl font-black text-text-main"></h2><p id="joDetailMeta" class="text-sm text-text-muted mt-1"></p></div><span id="joDetailBadge" class="badge"></span></div></div>
+                                <div class="section-card p-4 mb-4">
+                                    <div class="filter-bar"><input id="joCandSearch" type="search" placeholder="Rechercher un candidat..." class="flex-1 min-w-0 rounded-lg border-border-light text-sm focus:border-primary focus:ring-primary"><select id="joCandStatus" class="rounded-lg border-border-light text-sm focus:border-primary focus:ring-primary"><option value="">Tous les statuts</option><option value="pending">En attente</option><option value="accepted">Accepté</option><option value="rejected">Refusé</option></select></div>
+                                    <!-- Boutons de tri ajoutés ici -->
+                                    <div class="filter-bar mt-3">
+                                        <span class="text-xs text-text-muted font-bold mr-2">Trier par :</span>
+                                        <button type="button" data-sort="ai" class="outline-btn text-xs py-1 px-3">Score IA ⬇️</button>
+                                        <button type="button" data-sort="test" class="outline-btn text-xs py-1 px-3">Score test ⬇️</button>
+                                    </div>
+                                </div>
+                                <div class="section-card p-0 overflow-hidden"><div class="overflow-x-auto"><table class="w-full text-left text-sm"><thead class="bg-surface border-b border-border-light"><tr class="text-text-muted"><th class="px-5 py-4 font-bold">Candidat</th><th class="px-5 py-4 font-bold">Statut</th><th class="px-5 py-4 font-bold">Score IA</th><th class="px-5 py-4 font-bold">Test</th><th class="px-5 py-4 font-bold">Actions</th><tr></thead><tbody id="joCandidatesTableBody" class="divide-y divide-border-light/40"><tr><td colspan="5" class="px-5 py-6 text-text-muted">Aucun candidat.</td></tr></tbody></table></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- SECTION OFFRES & TESTS -->
+                <section id="page-offres-tests" class="page-section">
+                    <div class="mb-8"><h1 class="text-3xl font-black text-text-main">Offres &amp; Tests</h1><p class="text-text-muted mt-1">Créez vos offres et les tests associés, gérez leur statut.</p></div>
+                    <div class="grid md:grid-cols-2 gap-5 mb-8">
+                        <div class="section-card border-l-4 border-primary"><div class="flex items-start justify-between gap-4 mb-3"><div><h2 class="font-black text-lg text-text-main">Offres publiées</h2><p class="text-sm text-text-muted mt-1">Créez de nouvelles offres et consultez les offres actives publiées sur la plateforme.</p></div><div class="w-12 h-12 rounded-xl bg-primary-light flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-primary">work</span></div></div><button type="button" onclick="openCreateOfferModal()" class="save-btn flex items-center gap-2 mt-2"><span class="material-symbols-outlined" style="font-size:20px">add_circle</span> Créer une nouvelle offre</button></div>
+                        <div class="section-card border-l-4 border-secondary"><div class="flex items-start justify-between gap-4 mb-3"><div><h2 class="font-black text-lg text-text-main">Tests techniques</h2><p class="text-sm text-text-muted mt-1">Créez des tests QCM et envoyez-les aux candidats ayant un score IA supérieur ou égal à 50.</p></div><div class="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-secondary">quiz</span></div></div><button type="button" onclick="openCreateTestModal()" class="save-btn flex items-center gap-2 mt-2" style="background:#006d38"><span class="material-symbols-outlined" style="font-size:20px">add_circle</span> Créer un test technique</button></div>
+                    </div>
+                    <div class="section-card p-0 overflow-hidden mb-6"><div class="p-5 border-b border-border-light flex items-center justify-between"><h2 class="font-bold text-primary flex items-center gap-2"><span class="material-symbols-outlined" style="font-size:20px">work</span> Toutes les offres</h2></div><div class="overflow-x-auto"><table class="w-full text-left text-sm"><thead class="bg-surface border-b border-border-light"><tr class="text-text-muted"><th class="px-5 py-4 font-bold">Poste</th><th class="px-5 py-4 font-bold">Catégorie</th><th class="px-5 py-4 font-bold">Lieu</th><th class="px-5 py-4 font-bold">Contrat</th><th class="px-5 py-4 font-bold">Statut</th><th class="px-5 py-4 font-bold">Changer statut</th></tr></thead><tbody id="otOffersTableBody" class="divide-y divide-border-light/40"><tr><td colspan="6" class="px-5 py-6 text-text-muted">Chargement...</td></tr></tbody></table></div></div>
+                    <div class="section-card p-0 overflow-hidden"><div class="p-5 border-b border-border-light"><h2 class="font-bold text-primary flex items-center gap-2"><span class="material-symbols-outlined" style="font-size:20px">quiz</span> Tests techniques créés</h2></div><div class="overflow-x-auto"><table class="w-full text-left text-sm"><thead class="bg-surface border-b border-border-light"><tr class="text-text-muted"><th class="px-5 py-4 font-bold">Test</th><th class="px-5 py-4 font-bold">Offre liée</th><th class="px-5 py-4 font-bold">Durée</th><th class="px-5 py-4 font-bold">Questions</th><th class="px-5 py-4 font-bold">Statut</th> </tr></thead><tbody id="otTestsTableBody" class="divide-y divide-border-light/40"><tr><td colspan="5" class="px-5 py-6 text-text-muted">Chargement...</td></tr></tbody></table></div></div>
+                </section>
+
+
+                <div id="rhMessage" class="hidden fixed bottom-5 right-5 rounded-xl px-5 py-3 text-sm font-bold shadow-lg z-50"></div>
+            </div>
+        </main>
+    </div>
+</div>
+
+
+<!-- MODALS (simplifiés mais complets) -->
+<div id="modalCreateOffer" class="modal-overlay" onclick="handleModalOverlayClick(event,'modalCreateOffer')"><div class="modal-box"><div class="flex items-center justify-between mb-6"><h2 class="text-xl font-black text-text-main">Nouvelle offre d'emploi</h2><button onclick="closeModal('modalCreateOffer')" class="w-8 h-8 rounded-lg hover:bg-surface"><span class="material-symbols-outlined text-text-muted">close</span></button></div><form id="createJobForm" class="grid md:grid-cols-2 gap-4"><div><label class="block text-sm font-bold text-text-muted mb-2">Intitulé du poste</label><input type="text" id="jobTitle" required class="w-full rounded-lg border-border-light text-sm"></div><div><label class="block text-sm font-bold text-text-muted mb-2">Catégorie</label><select id="jobCategory" required class="w-full rounded-lg border-border-light text-sm"><option value="">Chargement...</option></select></div><div><label class="block text-sm font-bold text-text-muted mb-2">Lieu</label><input type="text" id="jobLocation" required class="w-full rounded-lg border-border-light text-sm"></div><div><label class="block text-sm font-bold text-text-muted mb-2">Type de contrat</label><select id="jobContractType" required class="w-full rounded-lg border-border-light text-sm"><option value="">Choisir</option><option value="CDI">CDI</option><option value="CDD">CDD</option><option value="Stage">Stage</option><option value="Alternance">Alternance</option></select></div><div class="md:col-span-2"><label class="block text-sm font-bold text-text-muted mb-2">Description</label><textarea id="jobDescription" rows="3" required class="w-full rounded-lg border-border-light text-sm"></textarea></div><div><label class="block text-sm font-bold text-text-muted mb-2">Missions</label><div id="missionsLines" class="space-y-2"><div class="flex gap-2 mission-line"><input type="text" class="mission-input w-full rounded-lg border-border-light text-sm" placeholder="Ex: Assurer la maintenance"><button type="button" class="remove-line-btn px-3 py-2 rounded-lg border border-border-light text-text-muted hover:bg-red-50">−</button></div></div><button type="button" id="addMissionLine" class="mt-2 text-sm font-bold text-primary">+ Ajouter une mission</button><textarea id="jobMissions" class="hidden"></textarea></div><div><label class="block text-sm font-bold text-text-muted mb-2">Profil recherché</label><div id="profilesLines" class="space-y-2"><div class="flex gap-2 profile-line"><input type="text" class="profile-input w-full rounded-lg border-border-light text-sm" placeholder="Ex: Bac+5"><button type="button" class="remove-line-btn px-3 py-2 rounded-lg border border-border-light text-text-muted hover:bg-red-50">−</button></div></div><button type="button" id="addProfileLine" class="mt-2 text-sm font-bold text-primary">+ Ajouter un critère</button><textarea id="jobProfiles" class="hidden"></textarea></div><div class="md:col-span-2 border rounded-xl p-4 bg-surface/60"><div class="flex justify-between"><div><p class="font-bold text-sm">Test technique associé</p><p class="text-xs text-text-muted">Liez un test à cette offre.</p></div><button type="button" onclick="openCreateTestFromOffer()" class="outline-btn text-sm">+ Ajouter un test</button></div><div id="testLinkedPreview" class="hidden mt-3 p-3 rounded-lg bg-green-50 border border-green-200 text-sm text-success"><span id="testLinkedName">Test associé</span> <span class="text-xs">(créé à la publication)</span></div></div><div class="md:col-span-2 flex justify-end gap-3 pt-2"><button type="button" onclick="closeModal('modalCreateOffer')" class="outline-btn">Annuler</button><button type="submit" id="createJobButton" class="save-btn">Publier l'offre</button></div></form></div></div>
+
+
+<div id="modalCreateTest" class="modal-overlay" onclick="handleModalOverlayClick(event,'modalCreateTest')"><div class="modal-box"><div class="flex items-center justify-between mb-6"><h2 class="text-xl font-black text-text-main">Créer un test technique</h2><button onclick="closeModal('modalCreateTest')" class="w-8 h-8 rounded-lg hover:bg-surface"><span class="material-symbols-outlined text-text-muted">close</span></button></div><form id="createTestForm" class="space-y-5"><div class="grid md:grid-cols-3 gap-4"><div><label class="block text-sm font-bold text-text-muted mb-2">Offre concernée</label><select id="testJob" required class="w-full rounded-lg border-border-light text-sm"><option value="">Choisir une offre</option></select></div><div><label class="block text-sm font-bold text-text-muted mb-2">Titre du test</label><input id="testTitle" type="text" required class="w-full rounded-lg border-border-light text-sm"></div><div><label class="block text-sm font-bold text-text-muted mb-2">Durée (min)</label><input id="testDuration" type="number" min="1" value="20" required class="w-full rounded-lg border-border-light text-sm"></div></div><div class="border rounded-xl p-4"><h3 class="font-bold text-sm text-primary mb-4">Questions du test</h3><div id="testQuestionsContainer" class="space-y-4"></div><button type="button" id="addQuestionButton" class="outline-btn mt-4">+ Ajouter une question</button></div><div class="flex justify-end gap-3"><button type="button" onclick="closeModal('modalCreateTest')" class="outline-btn">Annuler</button><button type="submit" id="createTestButton" class="save-btn">Enregistrer le test</button></div></form></div></div>
+
+
+<div id="modalVoirDetails" class="modal-overlay" onclick="handleModalOverlayClick(event,'modalVoirDetails')"><div class="modal-box" style="max-width:520px"><div class="flex justify-between mb-5"><h2 class="text-lg font-black">Voir détails</h2><button onclick="closeModal('modalVoirDetails')" class="w-8 h-8 rounded-lg hover:bg-surface"><span class="material-symbols-outlined text-text-muted">close</span></button></div><div class="space-y-4"><div class="flex gap-3 p-3 rounded-xl bg-surface border"><span class="material-symbols-outlined text-primary">phone</span><div><p class="text-xs text-text-muted font-semibold">Téléphone</p><p id="detailPhone" class="font-bold">—</p></div></div><div class="flex gap-3 p-3 rounded-xl bg-surface border"><span class="material-symbols-outlined text-primary">calendar_today</span><div><p class="text-xs text-text-muted font-semibold">Date de candidature</p><p id="detailDate" class="font-bold">—</p></div></div><div class="p-3 rounded-xl bg-surface border"><p class="text-xs text-text-muted font-semibold mb-2">CV</p><a id="detailCvLink" href="#" target="_blank" class="save-btn inline-flex gap-2 text-sm">Voir CV</a><span id="detailCvNone" class="text-sm text-text-muted hidden">Aucun CV fourni</span></div><div class="p-3 rounded-xl bg-surface border"><p class="text-xs text-text-muted font-semibold mb-2">Message (lettre de motivation)</p><div id="detailMessage" class="text-sm text-text-main whitespace-pre-wrap break-words max-h-48 overflow-y-auto p-2 bg-white rounded-md border border-border-light">—</div></div></div></div></div>
+<div id="modalConfirmDelete" class="modal-overlay" onclick="handleModalOverlayClick(event,'modalConfirmDelete')"><div class="modal-box" style="max-width:380px"><div class="flex flex-col items-center text-center gap-4 py-4"><div class="w-14 h-14 rounded-full bg-red-100 flex items-center justify-center"><span class="material-symbols-outlined text-danger">delete_forever</span></div><h2 class="text-lg font-black">Supprimer l'offre ?</h2><p class="text-sm text-text-muted">Action irréversible.</p><div class="flex gap-3 w-full"><button onclick="closeModal('modalConfirmDelete')" class="outline-btn flex-1">Annuler</button><button id="confirmDeleteBtn" class="save-btn flex-1" style="background:#c0392b">Supprimer</button></div></div></div></div>
+
+
+<div id="jobDetailsModal" class="modal-overlay" onclick="handleModalOverlayClick(event,'jobDetailsModal')"><div class="modal-box max-w-4xl"><div class="flex justify-between mb-7"><div><h2 id="jobModalTitle" class="text-3xl font-black text-primary">—</h2><div class="flex gap-2 mt-3"><span id="jobModalCategory" class="badge">—</span><span id="jobModalContract" class="badge">—</span><span id="jobModalLocation" class="badge">—</span></div></div><button onclick="closeModal('jobDetailsModal')" class="w-8 h-8 rounded-lg hover:bg-surface"><span class="material-symbols-outlined text-text-muted">close</span></button></div><div class="mb-5"><h3 class="font-bold text-primary flex gap-2 mb-3"> Description</h3><p id="jobModalDescription" class="text-sm text-text-muted">—</p></div><div class="mb-5"><h3 class="font-bold text-primary flex gap-2 mb-3"> Missions</h3><div id="jobModalMissions" class="space-y-2"></div></div><div class="mb-5"><h3 class="font-bold text-primary flex gap-2 mb-3"> Profil recherché</h3><div id="jobModalProfiles" class="space-y-2"></div></div></div></div>
+
+
+<script src="/static/js/rh-dashboard.js?v=15"></script>
+</body>
+<script src="/static/js/rh-dashboard.js?v=15"></script>
+</html>
+

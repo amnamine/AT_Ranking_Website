@@ -1,0 +1,730 @@
+{% load static %}
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Algérie Télécom - Carrières</title>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: "#2C5EAA",
+                            dark: "#224A86",
+                            light: "#EAF2FF",
+                        },
+                        accent: {
+                            DEFAULT: "#00AA5B",
+                            dark: "#008A4A",
+                            light: "#E7F8EF",
+                        },
+                        surface: "#F7FAFC",
+                        "surface-card": "#FFFFFF",
+                        "text-main": "#0F172A",
+                        "text-muted": "#475569",
+                        "text-light": "#94A3B8",
+                        "border-light": "#E2E8F0",
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                    },
+                    boxShadow: {
+                        card: "0 10px 30px rgba(15, 23, 42, 0.06)",
+                        soft: "0 18px 45px rgba(44, 94, 170, 0.14)",
+                    },
+                },
+            },
+        }
+    </script>
+
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .logo-img {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+            display: block;
+        }
+        .hero-photo {
+            background-image: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1600&q=80');
+            background-size: cover;
+            background-position: center 30%;
+            position: relative;
+        }
+        .hero-photo::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(90deg, rgba(15, 35, 70, 0.86) 0%, rgba(44, 94, 170, 0.72) 48%, rgba(0, 170, 91, 0.18) 100%),
+                linear-gradient(180deg, rgba(15, 23, 42, 0.15), rgba(15, 23, 42, 0.45));
+            z-index: 1;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        .soft-grid {
+            background-image:
+                linear-gradient(rgba(44, 94, 170, 0.06) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(44, 94, 170, 0.06) 1px, transparent 1px);
+            background-size: 28px 28px;
+        }
+        .hover-card {
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+        }
+        .hover-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 18px 40px rgba(44, 94, 170, 0.12);
+            border-color: rgba(44, 94, 170, 0.35);
+        }
+        .card-arrow {
+            transition: transform 0.25s ease;
+        }
+        .hover-card:hover .card-arrow {
+            transform: translateX(4px);
+        }
+        @media (prefers-reduced-motion: no-preference) {
+            .animate-on-scroll {
+                opacity: 0;
+                transform: translateY(24px);
+                transition: opacity 0.65s ease-out, transform 0.65s ease-out;
+            }
+            .animate-on-scroll.visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-surface font-display text-text-main antialiased">
+<div class="flex min-h-screen flex-col">
+
+    <!-- HEADER -->
+    <header class="sticky top-0 z-50 border-b border-border-light bg-white/95 backdrop-blur-sm">
+        <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 md:px-8">
+            <a href="{% url 'landingpage' %}" class="flex items-center gap-3">
+                <img src="{% static 'images/logo.png' %}" class="logo-img" alt="Algérie Télécom Logo">
+                <div class="leading-tight">
+                    <span class="block text-lg font-extrabold tracking-tight text-primary">Algérie Télécom</span>
+                    <span class="hidden text-xs font-medium text-text-muted sm:block">Espace carrières</span>
+                </div>
+            </a>
+
+            <nav class="hidden items-center gap-8 md:flex">
+                <a href="{% url 'landingpage' %}" class="relative text-sm font-bold text-primary">
+                    Accueil
+                    <span class="absolute -bottom-2 left-0 h-0.5 w-full rounded-full bg-accent"></span>
+                </a>
+                <a href="{% url 'job_list' %}" class="text-sm font-semibold text-text-muted transition-colors hover:text-primary">
+                    Offres d’emploi
+                </a>
+                <a href="{% url 'about_contact' %}" class="text-sm font-semibold text-text-muted transition-colors hover:text-primary">
+                    À propos
+                </a>
+                <a href="{% url 'about_contact' %}" class="text-sm font-semibold text-text-muted transition-colors hover:text-primary">
+                    Contact
+                </a>
+            </nav>
+
+            <div id="publicAuthActions" class="hidden items-center gap-3 md:flex">
+                <a href="{% url 'signin_page' %}" class="rounded-full border border-primary/20 bg-white px-5 py-2.5 text-sm font-bold text-primary transition-all hover:border-primary hover:bg-primary-light">
+                    Se connecter
+                </a>
+                <a href="{% url 'signup_page' %}" class="rounded-full bg-accent px-5 py-2.5 text-sm font-bold text-white shadow-soft transition-all hover:bg-accent-dark">
+                    Créer un compte
+                </a>
+            </div>
+
+            <button type="button" class="inline-flex rounded-xl border border-border-light p-2 text-text-main md:hidden" aria-label="Ouvrir le menu">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN -->
+    <main class="flex-1">
+
+        <!-- HERO -->
+        <section class="hero-photo flex min-h-[620px] items-center">
+            <div class="hero-content mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 md:px-8">
+                <div class="max-w-3xl">
+                    <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/12 px-4 py-2 text-xs font-bold uppercase tracking-wide text-white backdrop-blur-sm">
+                        <span class="h-2 w-2 rounded-full bg-accent"></span>
+                        Rejoignez un leader national
+                    </div>
+
+                    <h1 class="mb-7 text-4xl font-black leading-tight tracking-tight text-white sm:text-5xl md:text-6xl">
+                        Votre carrière au cœur du numérique algérien.
+                    </h1>
+
+                    <p class="mb-9 max-w-2xl text-lg leading-8 text-white/90">
+                        Algérie Télécom recrute des talents engagés pour développer les infrastructures, les services et les solutions digitales de demain.
+                    </p>
+
+                    <div class="flex flex-col gap-4 sm:flex-row">
+                        <a href="{% url 'job_list' %}" class="inline-flex h-14 items-center justify-center gap-2 rounded-full bg-accent px-8 text-base font-extrabold text-white shadow-lg shadow-black/15 transition-all hover:bg-accent-dark">
+                            Découvrir les offres
+                            <span class="material-symbols-outlined">arrow_forward</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TRUST STRIP -->
+        <section class="border-b border-border-light bg-white">
+            <div class="mx-auto grid max-w-7xl gap-6 px-4 py-8 sm:grid-cols-3 sm:px-6 md:px-8">
+                <div class="flex items-center gap-4">
+                    <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-primary-light text-primary">
+                        <span class="material-symbols-outlined">public</span>
+                    </div>
+                    <div>
+                        <p class="font-bold text-text-main">Impact national</p>
+                        <p class="text-sm text-text-muted">Connecter les citoyens et les entreprises.</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-accent-light text-accent">
+                        <span class="material-symbols-outlined">school</span>
+                    </div>
+                    <div>
+                        <p class="font-bold text-text-main">Évolution continue</p>
+                        <p class="text-sm text-text-muted">Formation, accompagnement et mobilité.</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-primary-light text-primary">
+                        <span class="material-symbols-outlined">hub</span>
+                    </div>
+                    <div>
+                        <p class="font-bold text-text-main">Projets stratégiques</p>
+                        <p class="text-sm text-text-muted">Réseaux, fibre, cloud et services digitaux.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- WHY JOIN US -->
+        <section class="soft-grid py-24">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
+                <div class="mx-auto mb-14 max-w-2xl text-center animate-on-scroll">
+                    <span class="mb-3 inline-flex rounded-full bg-primary-light px-4 py-2 text-xs font-extrabold uppercase tracking-wide text-primary">
+                        Pourquoi nous rejoindre ?
+                    </span>
+                    <h2 class="mb-4 text-3xl font-black tracking-tight text-text-main md:text-4xl">
+                        Un environnement moderne, stable et tourné vers l’avenir.
+                    </h2>
+                    <p class="text-lg leading-8 text-text-muted">
+                        Développez vos compétences dans une entreprise nationale qui place l’innovation, la collaboration et l’impact au centre de ses projets.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+                    <div class="hover-card animate-on-scroll rounded-2xl border border-border-light bg-white p-8 shadow-card">
+                        <div class="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-light text-primary">
+                            <span class="material-symbols-outlined text-3xl">bolt</span>
+                        </div>
+                        <h3 class="mb-3 text-xl font-extrabold">Innovation</h3>
+                        <p class="leading-7 text-text-muted">
+                            Participez à des projets technologiques avancés : fibre optique, 5G, cloud et transformation digitale.
+                        </p>
+                    </div>
+
+                    <div class="hover-card animate-on-scroll rounded-2xl border border-border-light bg-white p-8 shadow-card" style="transition-delay: 0.08s;">
+                        <div class="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-accent-light text-accent">
+                            <span class="material-symbols-outlined text-3xl">trending_up</span>
+                        </div>
+                        <h3 class="mb-3 text-xl font-extrabold">Carrière</h3>
+                        <p class="leading-7 text-text-muted">
+                            Bénéficiez de plans de formation continue et d’opportunités d’évolution interne.
+                        </p>
+                    </div>
+
+                    <div class="hover-card animate-on-scroll rounded-2xl border border-border-light bg-white p-8 shadow-card" style="transition-delay: 0.16s;">
+                        <div class="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-light text-primary">
+                            <span class="material-symbols-outlined text-3xl">diversity_3</span>
+                        </div>
+                        <h3 class="mb-3 text-xl font-extrabold">Équipe & impact</h3>
+                        <p class="leading-7 text-text-muted">
+                            Rejoignez une communauté engagée et contribuez au développement numérique du pays.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LATEST OFFERS -->
+        <section class="border-y border-border-light bg-white py-20">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
+                <div class="mb-10 flex flex-col justify-between gap-5 md:flex-row md:items-end">
+                    <div>
+                        <span class="mb-3 inline-flex rounded-full bg-accent-light px-4 py-2 text-xs font-extrabold uppercase tracking-wide text-accent">
+                            Opportunités
+                        </span>
+                        <h2 class="text-3xl font-black tracking-tight text-text-main md:text-4xl">
+                            Nos dernières offres
+                        </h2>
+                        <p class="mt-3 max-w-xl text-text-muted">
+                            Explorez des postes récemment publiés à travers l’Algérie.
+                        </p>
+                    </div>
+                    <a href="{% url 'job_list' %}" class="inline-flex items-center gap-2 text-sm font-extrabold text-primary transition-colors hover:text-primary-dark">
+                        Toutes les offres
+                        <span class="material-symbols-outlined text-lg">east</span>
+                    </a>
+                </div>
+
+                <div id="latestJobsGrid" class="grid grid-cols-1 gap-6 md:grid-cols-2">
+                    <div class="rounded-2xl border border-border-light bg-surface-card p-6 shadow-card md:col-span-2">
+                        <div class="flex items-center gap-3 text-text-muted">
+                            <span class="material-symbols-outlined animate-spin text-primary">progress_activity</span>
+                            <span class="text-sm font-semibold">Chargement des dernières offres...</span>
+                        </div>
+                    </div>
+                </div>            </div>
+        </section>
+    </main>
+<footer class="mt-10 bg-primary text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-12">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+            <!-- Présentation -->
+            <div>
+                <h3 class="text-lg font-bold mb-4 flex items-center gap-3">
+                    <img src="{% static 'images/logo.png' %}" class="logo-img" alt="Logo">
+                    Algérie Télécom
+                </h3>
+                <p class="text-sm text-white/80 leading-relaxed">
+                    Algérie Télécom Carrières accompagne les talents souhaitant contribuer au développement numérique et technologique de l’Algérie.
+                </p>
+            </div>
+
+            <!-- À propos -->
+            <div>
+                <h3 class="text-lg font-bold mb-4">À propos</h3>
+                <ul class="space-y-2 text-sm text-white/80">
+                    <li><a href="{% url 'about_contact' %}" class="hover:text-white transition-colors">Qui sommes-nous ?</a></li>
+                    <li><a href="{% url 'about_contact' %}" class="hover:text-white transition-colors">Nos valeurs</a></li>
+                    <li><a href="{% url 'job_list' %}" class="hover:text-white transition-colors">Offres d’emploi</a></li>
+                    <li><a href="{% url 'connexion_page' %}" class="hover:text-white transition-colors">Espace candidat</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact avec copie email -->
+            <div>
+                <h3 class="text-lg font-bold mb-4">Contact</h3>
+                <ul class="space-y-3 text-sm text-white/80">
+                    <li class="flex gap-2">
+                        <span class="material-symbols-outlined text-base text-accent">location_on</span>
+                        <span>Alger, Algérie</span>
+                    </li>
+                    <li class="flex gap-2 items-center">
+                        <span class="material-symbols-outlined text-base text-accent">mail</span>
+                        <div class="flex items-center gap-2">
+                            <span id="emailAddress" class="cursor-pointer hover:underline" data-email="contact@algerietelecom.dz">contact@algerietelecom.dz</span>
+                            <button id="copyEmailBtn" class="text-xs bg-white/20 hover:bg-white/30 px-2 py-1 rounded transition-colors" title="Copier l'email">Copier</button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Réseaux sociaux -->
+            <div>
+                <h3 class="text-lg font-bold mb-4">Suivez-nous</h3>
+                <div class="flex flex-col gap-2 text-sm text-white/80">
+                    <a href="https://web.facebook.com/AlgerieTelecom/?_rdc=1&_rdr#" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors flex items-center gap-2">
+                        <span class="material-symbols-outlined text-base">facebook</span> Facebook
+                    </a>
+                    <a href="https://dz.linkedin.com/company/algerie-telecom-" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors flex items-center gap-2">
+                        <span class="material-symbols-outlined text-base">linkedin</span> LinkedIn
+                    </a>
+                    <a href="https://www.instagram.com/algerietelecom/?hl=en" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors flex items-center gap-2">
+                        <span class="material-symbols-outlined text-base">photo_camera</span> Instagram
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bas de page -->
+    <div class="border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-4 py-5 flex justify-between items-center flex-wrap gap-4">
+            <span class="text-xs text-white/70">© 2026 Algérie Télécom Carrières. Tous droits réservés.</span>
+            <div class="h-1.5 w-24 rounded-full bg-accent"></div>
+        </div>
+    </div>
+</footer>
+
+<script>
+(function() {
+    function copyEmail(email, element) {
+        // 1. Try modern Clipboard API
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(email).then(function() {
+                showToast("Email copié !", false);
+            }).catch(function() {
+                fallbackCopy(element);
+            });
+        } else {
+            // 2. Fallback for non-HTTPS or older browsers
+            fallbackCopy(element);
+        }
+    }
+
+    function fallbackCopy(element) {
+        if (element && element.tagName === 'SPAN') {
+            const range = document.createRange();
+            range.selectNodeContents(element);
+            const sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(range);
+
+            try {
+                // Attempts to force copy the text selected above
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showToast("Email copié !", false);
+                    // Optional: deselect text after copy
+                    sel.removeAllRanges(); 
+                } else {
+                    showToast("Sélectionnez l'email et faites Ctrl+C", true);
+                }
+            } catch (err) {
+                showToast("Sélectionnez l'email et faites Ctrl+C", true);
+            }
+        } else {
+            showToast("Sélectionnez l'email et faites Ctrl+C", true);
+        }
+    }
+
+    function showToast(message, isWarning) {
+        let toast = document.getElementById("copyToast");
+        if (!toast) {
+            toast = document.createElement("div");
+            toast.id = "copyToast";
+            toast.style.position = "fixed";
+            toast.style.bottom = "24px";
+            toast.style.right = "24px";
+            toast.style.backgroundColor = isWarning ? "#d97706" : "#0f8f5f";
+            toast.style.color = "white";
+            toast.style.padding = "10px 18px";
+            toast.style.borderRadius = "10px";
+            toast.style.fontSize = "0.875rem";
+            toast.style.fontWeight = "600";
+            toast.style.zIndex = "9999";
+            toast.style.boxShadow = "0 8px 20px rgba(0,0,0,0.2)";
+            toast.style.transition = "opacity 0.2s";
+            toast.style.opacity = "0";
+            document.body.appendChild(toast);
+        } else {
+            toast.style.backgroundColor = isWarning ? "#d97706" : "#0f8f5f";
+        }
+        toast.textContent = message;
+        toast.style.opacity = "1";
+        setTimeout(function() {
+            toast.style.opacity = "0";
+        }, 2500);
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const emailSpan = document.getElementById("emailAddress");
+        const copyBtn = document.getElementById("copyEmailBtn");
+        const email = emailSpan ? emailSpan.getAttribute("data-email") || emailSpan.textContent : "contact@algerietelecom.dz";
+        
+        function handleCopy(e) {
+            copyEmail(email, emailSpan);
+        }
+        if (emailSpan) emailSpan.addEventListener("click", handleCopy);
+        if (copyBtn) copyBtn.addEventListener("click", handleCopy);
+    });
+})();
+</script>
+</div>
+
+<script>
+    (function () {
+        const authHeaderActions = document.getElementById("authHeaderActions");
+        if (!authHeaderActions) return;
+
+        const token = localStorage.getItem("access_token");
+        const storedRole = localStorage.getItem("user_role");
+        let role = storedRole;
+
+        if (!role) {
+            try {
+                const userData = JSON.parse(localStorage.getItem("user_data") || "{}");
+                role = userData.role || userData.user_role || "";
+            } catch (error) {
+                role = "";
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem("access_token");
+            localStorage.removeItem("refresh_token");
+            localStorage.removeItem("user_role");
+            localStorage.removeItem("user_email");
+            localStorage.removeItem("user_data");
+            localStorage.removeItem("signupData");
+            localStorage.removeItem("profilData");
+            window.location.href = "/";
+        }
+
+        if (!token) {
+            authHeaderActions.innerHTML = `
+                <a href="/signin/" class="text-sm font-semibold text-primary hover:text-primary-dark transition-colors">
+                    Se connecter
+                </a>
+                <a href="/signup/" class="inline-flex items-center justify-center rounded-xl h-10 px-5 bg-accent text-white text-sm font-bold hover:bg-accent-dark transition-all shadow-sm">
+                    Créer un compte
+                </a>
+            `;
+            return;
+        }
+
+        if (String(role).toLowerCase() === "rh") {
+            authHeaderActions.innerHTML = `
+                <a href="/rh/" class="inline-flex items-center justify-center rounded-xl h-10 px-5 bg-primary text-white text-sm font-bold hover:bg-primary-dark transition-all shadow-sm">
+                    Espace RH
+                </a>
+                <button type="button" id="logoutBtn" class="text-sm font-semibold text-text-muted hover:text-primary transition-colors">
+                    Se déconnecter
+                </button>
+            `;
+        } else {
+            authHeaderActions.innerHTML = `
+                <a href="/profile/" class="inline-flex items-center justify-center rounded-xl h-10 px-5 bg-primary text-white text-sm font-bold hover:bg-primary-dark transition-all shadow-sm">
+                    Mon espace
+                </a>
+                <button type="button" id="logoutBtn" class="text-sm font-semibold text-text-muted hover:text-primary transition-colors">
+                    Se déconnecter
+                </button>
+            `;
+        }
+
+        const logoutBtn = document.getElementById("logoutBtn");
+        if (logoutBtn) logoutBtn.addEventListener("click", logout);
+    })();
+</script>
+</div>
+
+<script>
+    (function() {
+        const latestJobsGrid = document.getElementById("latestJobsGrid");
+        if (!latestJobsGrid) return;
+
+        const escapeHtml = (value) => {
+            return String(value ?? "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        };
+
+        const formatDate = (dateValue) => {
+            if (!dateValue) return "Récemment";
+
+            const date = new Date(dateValue);
+            if (Number.isNaN(date.getTime())) return "Récemment";
+
+            const diffMs = Date.now() - date.getTime();
+            const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+            if (diffDays <= 0) return "Aujourd’hui";
+            if (diffDays === 1) return "Hier";
+            if (diffDays < 7) return `Il y a ${diffDays} jours`;
+            if (diffDays < 30) {
+                const weeks = Math.floor(diffDays / 7);
+                return weeks === 1 ? "Il y a 1 semaine" : `Il y a ${weeks} semaines`;
+            }
+
+            return date.toLocaleDateString("fr-FR", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+            });
+        };
+
+        const getCategoryName = (job) => {
+            if (job.category_name) return job.category_name;
+            if (typeof job.category === "string") return job.category;
+            if (job.category && typeof job.category === "object" && job.category.name) return job.category.name;
+            return "Offre";
+        };
+
+        const getDescription = (job) => {
+            const description = job.description || "Consultez les détails de cette offre et postulez directement en ligne.";
+            return description.length > 115 ? `${description.slice(0, 115).trim()}...` : description;
+        };
+
+        const renderJobCard = (job, index) => {
+            const categoryName = escapeHtml(getCategoryName(job));
+            const title = escapeHtml(job.title || "Offre d’emploi");
+            const description = escapeHtml(getDescription(job));
+            const location = escapeHtml(job.location || "Algérie");
+            const contractType = escapeHtml(job.contract_type || "Non précisé");
+            const dateLabel = escapeHtml(formatDate(job.date_posted || job.created_at));
+            const badgeClass = index % 2 === 0
+                ? "bg-primary-light text-primary"
+                : "bg-accent-light text-accent";
+
+            return `
+                <article class="hover-card rounded-2xl border border-border-light bg-surface-card p-6 shadow-card">
+                    <div class="mb-4 flex items-start justify-between gap-4">
+                        <span class="rounded-full ${badgeClass} px-3 py-1.5 text-xs font-bold">${categoryName}</span>
+                        <span class="flex items-center gap-1 text-xs text-text-light">
+                            <span class="material-symbols-outlined text-sm">schedule</span> ${dateLabel}
+                        </span>
+                    </div>
+                    <h3 class="mb-2 text-lg font-extrabold text-text-main">${title}</h3>
+                    <p class="mb-5 text-sm leading-6 text-text-muted">${description}</p>
+                    <div class="mb-5 flex flex-wrap items-center gap-4 text-xs font-medium text-text-muted">
+                        <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm text-primary">location_on</span> ${location}</span>
+                        <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm text-primary">work</span> ${contractType}</span>
+                    </div>
+                    <a href="/jobs/detail/?id=${encodeURIComponent(job.id)}" class="inline-flex items-center gap-1.5 text-sm font-extrabold text-primary hover:text-primary-dark">
+                        Voir l’offre
+                        <span class="material-symbols-outlined card-arrow text-sm">arrow_forward</span>
+                    </a>
+                </article>
+            `;
+        };
+
+        const renderEmptyState = () => {
+            latestJobsGrid.innerHTML = `
+                <div class="rounded-2xl border border-dashed border-border-light bg-surface-card p-8 text-center md:col-span-2">
+                    <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary-light text-primary">
+                        <span class="material-symbols-outlined">work_off</span>
+                    </div>
+                    <h3 class="mb-2 text-lg font-extrabold text-text-main">Aucune offre disponible pour le moment</h3>
+                    <p class="text-sm text-text-muted">Revenez bientôt pour découvrir les nouvelles opportunités.</p>
+                </div>
+            `;
+        };
+
+        const loadLatestJobs = async () => {
+            try {
+                const response = await fetch("/api/jobs/");
+                if (!response.ok) throw new Error("Impossible de charger les offres");
+
+                const data = await response.json();
+                const jobs = Array.isArray(data) ? data : (data.results || []);
+
+                const latestJobs = jobs
+                    .filter((job) => job && job.id && job.is_active !== false)
+                    .sort((a, b) => {
+                        const dateA = new Date(a.date_posted || a.created_at || 0).getTime();
+                        const dateB = new Date(b.date_posted || b.created_at || 0).getTime();
+                        if (dateB !== dateA) return dateB - dateA;
+                        return Number(b.id || 0) - Number(a.id || 0);
+                    })
+                    .slice(0, 4);
+
+                if (!latestJobs.length) {
+                    renderEmptyState();
+                    return;
+                }
+
+                latestJobsGrid.innerHTML = latestJobs.map(renderJobCard).join("");
+            } catch (error) {
+                latestJobsGrid.innerHTML = `
+                    <div class="rounded-2xl border border-red-100 bg-red-50 p-6 text-sm font-semibold text-red-700 md:col-span-2">
+                        Les dernières offres n’ont pas pu être chargées. Veuillez réessayer plus tard.
+                    </div>
+                `;
+            }
+        };
+
+        loadLatestJobs();
+    })();
+</script>
+
+<script>
+    (function() {
+        const authActions = document.getElementById("publicAuthActions");
+        if (!authActions) return;
+
+        const token = localStorage.getItem("access_token");
+        let role = (localStorage.getItem("user_role") || "").toLowerCase();
+
+        if (!role) {
+            try {
+                const userData = JSON.parse(localStorage.getItem("user_data") || "{}");
+                role = (userData.role || "").toLowerCase();
+            } catch (error) {
+                role = "";
+            }
+        }
+
+        const clearAuthData = () => {
+            [
+                "access_token",
+                "refresh_token",
+                "user_role",
+                "user_email",
+                "user_data",
+                "signupData",
+                "profilData"
+            ].forEach((key) => localStorage.removeItem(key));
+            window.location.href = "{% url 'landingpage' %}";
+        };
+
+        if (!token) {
+            authActions.innerHTML = `
+                <a href="{% url 'signin_page' %}" class="rounded-full border border-primary/20 bg-white px-5 py-2.5 text-sm font-bold text-primary transition-all hover:border-primary hover:bg-primary-light">
+                    Se connecter
+                </a>
+                <a href="{% url 'signup_page' %}" class="rounded-full bg-accent px-5 py-2.5 text-sm font-bold text-white shadow-soft transition-all hover:bg-accent-dark">
+                    Créer un compte
+                </a>
+            `;
+            return;
+        }
+
+        const dashboardUrl = role === "rh" ? "{% url 'rh_page' %}" : "{% url 'profile_page' %}";
+        const dashboardLabel = role === "rh" ? "Espace RH" : "Mon espace";
+
+        authActions.innerHTML = `
+            <a href="${dashboardUrl}" class="rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-white shadow-soft transition-all hover:bg-primary-dark">
+                ${dashboardLabel}
+            </a>
+            <button type="button" id="publicLogoutBtn" class="rounded-full border border-red-200 bg-white px-5 py-2.5 text-sm font-bold text-red-600 transition-all hover:bg-red-50">
+                Se déconnecter
+            </button>
+        `;
+
+        const logoutBtn = document.getElementById("publicLogoutBtn");
+        if (logoutBtn) {
+            logoutBtn.addEventListener("click", clearAuthData);
+        }
+    })();
+</script>
+
+<script>
+    (function() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+    })();
+</script>
+{% include "careers/chatbot.html" %}
+<script src="{% static 'js/chatbot.js' %}"></script>
+</body>
+</html>
